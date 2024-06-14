@@ -71,7 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 // Ensure that if the mysql profile is active we connect to the real database:
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-	// @TestPropertySource("/application-postgres.properties")
+// @TestPropertySource("/application-postgres.properties")
 class ClinicServiceTests {
 
 	@Autowired
@@ -93,12 +93,13 @@ class ClinicServiceTests {
 		assertThat(owners).isEqualTo(vets);
 		if (owners.isEmpty()) {
 			assertThat(owners).hasSize(1);
-		} else if (vets != null) {
+		}
+		else if (vets != null) {
 			assertThat(vets.toString() != null);
 		}
 
-		String[] array1 = new String[]{"a", "b", "c"};
-		String[] array2 = new String[]{"a", "b", "c"};
+		String[] array1 = new String[] { "a", "b", "c" };
+		String[] array2 = new String[] { "a", "b", "c" };
 
 		// Reference equality tested: prints 'false'
 		System.out.println(array1.equals(array2));
@@ -107,19 +108,13 @@ class ClinicServiceTests {
 		System.out.println(Arrays.equals(array1, array2));
 	}
 
-
 	@Test
 	void shouldFindSingleOwnerWithPet() {
 		Owner owner = this.owners.findById(1);
 		assertThat(owner.getLastName()).startsWith("Franklin");
 		assertThat(owner.getPets()).hasSize(1);
-		assertThat(owner.getPets()
-						.get(0)
-						.getType()).isNotNull();
-		assertThat(owner.getPets()
-						.get(0)
-						.getType()
-						.getName()).isEqualTo("cat");
+		assertThat(owner.getPets().get(0).getType()).isNotNull();
+		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
 	}
 
 	@Test
@@ -170,8 +165,7 @@ class ClinicServiceTests {
 	@Transactional
 	void shouldInsertPetIntoDatabaseAndGenerateId() {
 		Owner owner6 = this.owners.findById(6);
-		int found = owner6.getPets()
-						  .size();
+		int found = owner6.getPets().size();
 
 		Pet pet = new Pet();
 		pet.setName("bowser");
@@ -213,12 +207,8 @@ class ClinicServiceTests {
 		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
 		assertThat(vet.getLastName()).isEqualTo("Douglas");
 		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties()
-					  .get(0)
-					  .getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties()
-					  .get(1)
-					  .getName()).isEqualTo("surgery");
+		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
 	}
 
 	@Test
@@ -226,8 +216,7 @@ class ClinicServiceTests {
 	void shouldAddNewVisitForPet() {
 		Owner owner6 = this.owners.findById(6);
 		Pet pet7 = owner6.getPet(7);
-		int found = pet7.getVisits()
-						.size();
+		int found = pet7.getVisits().size();
 		Visit visit = new Visit();
 		visit.setDescription("test");
 
@@ -237,8 +226,8 @@ class ClinicServiceTests {
 		owner6 = this.owners.findById(6);
 
 		assertThat(pet7.getVisits()) //
-									 .hasSize(found + 1) //
-									 .allMatch(value -> value.getId() != null);
+			.hasSize(found + 1) //
+			.allMatch(value -> value.getId() != null);
 	}
 
 	@Test
@@ -248,10 +237,10 @@ class ClinicServiceTests {
 		Collection<Visit> visits = pet7.getVisits();
 
 		assertThat(visits) //
-						   .hasSize(2) //
-						   .element(0)
-						   .extracting(Visit::getDate)
-						   .isNotNull();
+			.hasSize(2) //
+			.element(0)
+			.extracting(Visit::getDate)
+			.isNotNull();
 	}
 
 }
