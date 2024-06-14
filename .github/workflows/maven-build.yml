@@ -35,6 +35,9 @@ jobs:
           comment-summary-in-pr: always
           fail-on-severity: high
           deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
-        #   retry-on-snapshot-warnings: true        
+          warn-only: true
+          base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        #   retry-on-snapshot-warnings: true
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
