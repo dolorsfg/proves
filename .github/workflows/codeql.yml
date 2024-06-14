@@ -13,7 +13,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main", "protected" ]
+    branches: [ "main", "protected", "feature/**" ]
   pull_request:
     branches: [ "main" ]
     paths-ignore:
@@ -21,6 +21,7 @@ on:
       - '**/*.txt'
   schedule:
     - cron: '20 16 * * 6'
+  workflow_dispatch:
 
 jobs:
   analyze:
