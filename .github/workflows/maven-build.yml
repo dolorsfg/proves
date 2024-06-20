@@ -52,14 +52,14 @@ jobs:
 
       - name: Archive test results
         if: always() # Always run this step, even if the previous one failed
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: archive-test-results
           path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, jest-junit.xml
 
       - name: Archive coverage results
         if: always() # Always run this step, even if the previous one failed
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: archive-code-coverage
           path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, target/jacoco.exec
@@ -69,9 +69,11 @@ jobs:
 
       - name: Archive build artifacts
         if: always() # Always run this step, even if the previous one failed
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: archive-artifacts
+          path: target/*.jar, target/*.war, target/*.ear, target/*.zip, target/*.tgz, target/*.pdf, target/*.odt
+          if-no-files-found: error
 
       - name: download artifacts
         uses: actions/download-artifact@v4
