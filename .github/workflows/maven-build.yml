@@ -42,11 +42,38 @@ jobs:
           #retry-on-snapshot-warnings: true
       - name: Run tests
         run: ./mvnw -B test
-      - name: Archive test and coverage results
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Junit Tests
+          path: target/surefire-reports/*.xml
+          reporter: jest-junit
+
+      - name: Archive test results
         if: always() # Always run this step, even if the previous one failed
         uses: actions/upload-artifact@v2
         with:
-          name: test-results-and-code-coverage
+          name: archive-test-results
+          path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, jest-junit.xml
+
+      - name: Archive coverage results
+        if: always() # Always run this step, even if the previous one failed
+        uses: actions/upload-artifact@v2
+        with:
+          name: archive-code-coverage
           path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, target/jacoco.exec
+
       - name: Build with Maven Wrapper
         run: ./mvnw -B package -DskipTests
+
+      - name: Archive build artifacts
+        if: always() # Always run this step, even if the previous one failed
+        uses: actions/upload-artifact@v2
+        with:
+          name: archive-artifacts
+
+      - name: download artifacts
+        uses: actions/download-artifact@v2
+      - name: Display structure of downloaded files
+        run: ls -R
