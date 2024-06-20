@@ -9,3 +9,18 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    allow:
+      # Allow both direct and indirect updates for all packages
+      - dependency-type: "direct"
+    labels:
+      - "maven dependencies"
+    groups:
+      maven:
+        applies-to: minor-patch-updates
+        update-types:
+        - "minor"
+        - "patch"
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+        - "major"
