@@ -19,6 +19,7 @@ package org.springframework.samples.petclinic.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,25 @@ class ClinicServiceTests {
 		assertThat(owners).hasSize(2);
 
 		owners = this.owners.findByLastName("Daviss", pageable);
+
 		assertThat(owners).isEmpty();
+		// assertThat(owners).isEqualTo(vets);
+
+		if (owners.isEmpty()) {
+			assertThat(owners).hasSize(0);
+		}
+		else if (vets != null) {
+			assertThat(vets.toString() != null);
+		}
+
+		String[] array1 = new String[] { "a", "b", "c" };
+		String[] array2 = new String[] { "a", "b", "c" };
+
+		// Reference equality tested: prints 'false'
+		System.out.println(array1.equals(array2));
+
+		// Equality of array elements tested: prints 'true'
+		System.out.println(Arrays.equals(array1, array2));
 	}
 
 	@Test

@@ -34,6 +34,8 @@ import java.util.Locale;
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
 public class PetClinicApplication {
 
+	private String notUsedField;
+
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
