@@ -66,10 +66,11 @@ jobs:
           path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, target/jacoco.exec
 
       - name: Build with Maven Wrapper
+        if: success() || (contains(fromJSON('["feature", "bugfix"]'), github.base_ref))  
         run: ./mvnw -B package -DskipTests
 
       - name: Archive build artifacts
-        if: always() # Always run this step, even if the previous one failed
+        if: success() || (contains(fromJSON('["feature", "bugfix"]'), github.base_ref))  
         uses: actions/upload-artifact@v4
         with:
           name: archive-artifacts
@@ -80,8 +81,11 @@ jobs:
             **/target/*.pdf
             **/target/*.odt
           if-no-files-found: error
-      - name: Display structure of downloaded files
-        run: ls -R
+          
       - name: download artifacts
         if: always() # Always run this step, even if the previous one failed
         uses: actions/download-artifact@v4
+
+      - name: Display structure of downloaded files
+        if: always() # Always run this step, even if the previous one failed
+        run: ls -R
