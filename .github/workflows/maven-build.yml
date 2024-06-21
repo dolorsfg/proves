@@ -42,6 +42,7 @@ jobs:
           #retry-on-snapshot-warnings: true
       - name: Run tests
         run: ./mvnw -B clean test
+
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
@@ -72,10 +73,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: archive-artifacts
-          path: target/*.jar, target/*.war, target/*.ear, target/*.zip, target/*.tgz, target/*.pdf, target/*.odt
+          path: |
+            **/target/*.?ar
+            **/target/*.zip
+            **/target/*.tgz
+            **/target/*.pdf
+            **/target/*.odt
           if-no-files-found: error
-
-      - name: download artifacts
-        uses: actions/download-artifact@v4
       - name: Display structure of downloaded files
         run: ls -R
+      - name: download artifacts
+        if: always() # Always run this step, even if the previous one failed
+        uses: actions/download-artifact@v4
