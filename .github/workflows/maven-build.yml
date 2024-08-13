@@ -81,8 +81,9 @@ jobs:
           if-no-files-found: error
           
   deploy:   
-   runs-on: ubuntu-latest
-   steps:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: download artifacts
         if: always() # Always run this step, even if the previous one failed
         uses: actions/download-artifact@v4
