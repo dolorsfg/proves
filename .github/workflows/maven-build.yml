@@ -80,12 +80,14 @@ jobs:
             **/target/*.odt
           if-no-files-found: error
           
+  deploy:   
+   runs-on: ubuntu-latest
+   steps:
       - name: download artifacts
         if: always() # Always run this step, even if the previous one failed
         uses: actions/download-artifact@v4
         with:
           name: archive-artifacts
-            
 
       - name: Display structure of downloaded files
         if: always() # Always run this step, even if the previous one failed
