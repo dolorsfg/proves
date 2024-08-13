@@ -51,19 +51,17 @@ jobs:
           path: target/surefire-reports/*.xml
           reporter: java-junit
 
-      - name: Archive test results
+      - name: Archive test and coverage results
         if: always() # Always run this step, even if the previous one failed
         uses: actions/upload-artifact@v4
         with:
           name: archive-test-results
-          path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, jest-junit.xml
-
-      - name: Archive coverage results
-        if: always() # Always run this step, even if the previous one failed
-        uses: actions/upload-artifact@v4
-        with:
-          name: archive-code-coverage
-          path: target/surefire-reports/*.xml, target/failsafe-reports/*.xml, target/jacoco.exec
+          path: |
+            target/surefire-reports/*.xml
+            target/failsafe-reports/*.xml
+            jest-junit.xml
+            target/jacoco.exec
+          if-no-files-found: error
 
       - name: Build with Maven Wrapper
         if: success() || (contains(fromJSON('["feature", "bugfix"]'), github.base_ref))  
