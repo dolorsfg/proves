@@ -14,6 +14,9 @@ updates:
       - dependency-type: "direct"
     labels:
       - "maven dependencies"
+    ignore:
+      - dependency-name: *:*plugin
+      - dependency-name: *:*checkstyle*
     groups:
       maven:
         applies-to: minor-patch-updates
