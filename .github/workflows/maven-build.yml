@@ -41,14 +41,14 @@ jobs:
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
           #retry-on-snapshot-warnings: true
       - name: Run tests
-        run: ./mvnw -B clean test
+        run: ./mvnw -B clean -Dmaven.test.failure.ignore=true org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report
 
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
           name: Junit Tests
-          path: target/surefire-reports/*.xml
+          path: '**/target/surefire-reports/*.xml'
           reporter: java-junit
 
       - name: Archive test and coverage results
@@ -57,9 +57,8 @@ jobs:
         with:
           name: archive-test-results
           path: |
-            target/surefire-reports/*.xml
-            target/failsafe-reports/*.xml
-            jest-junit.xml
+            **/target/surefire-reports/*.xml
+            **/target/failsafe-reports/*.xml
             target/jacoco.exec
           if-no-files-found: error
 
